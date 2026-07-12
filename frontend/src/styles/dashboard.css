@@ -1,0 +1,168 @@
+/* ============================================================
+   Team dashboard + Admin control panel
+   ============================================================ */
+
+.dash-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.dash-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--bg-line);
+  background: var(--bg-surface-raised);
+}
+
+.dash-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  margin: 0;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-line);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.stat-card .num {
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: var(--gold);
+}
+
+.stat-card .lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-low);
+  font-weight: 700;
+}
+
+.purse-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg-line);
+  overflow: hidden;
+  margin-top: 10px;
+}
+.purse-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.role-breakdown {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 24px;
+}
+
+.squad-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.squad-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-low);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--bg-line);
+}
+.squad-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--bg-line);
+}
+.squad-table tr:last-child td { border-bottom: none; }
+.squad-table .price { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  margin: 30px 0 14px;
+}
+
+/* --- Admin panel --- */
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+}
+@media (max-width: 950px) { .admin-layout { grid-template-columns: 1fr; } }
+
+.control-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.player-pool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 640px;
+  overflow-y: auto;
+}
+
+.pool-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-raised);
+  border: 1px solid transparent;
+}
+.pool-row.active-block { border-color: var(--gold); }
+
+.pool-row .who { display: flex; align-items: center; gap: 10px; }
+.pool-row .who img { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; }
+.pool-row .name { font-weight: 600; font-size: 13.5px; }
+.pool-row .base { color: var(--text-low); font-size: 12px; }
+
+.add-player-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.add-player-form .full { grid-column: 1 / -1; }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-surface-raised);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  margin-bottom: 18px;
+  width: fit-content;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-mid);
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.tab-btn.active { background: var(--gold); color: #201700; }

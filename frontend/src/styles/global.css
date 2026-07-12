@@ -1,0 +1,304 @@
+/* ============================================================
+   StrikeZone Auctions — design tokens
+   Direction: auction house meets stadium broadcast at night.
+   Deep pitch-charcoal background, floodlight-gold for money/bids,
+   scoreboard-condensed display type for the big numbers.
+   ============================================================ */
+
+:root {
+  /* Color */
+  --bg-void: #0b120e;          /* deepest background, like a pitch under night sky */
+  --bg-surface: #131d18;       /* card surfaces */
+  --bg-surface-raised: #1b2822; /* raised panels, hovered rows */
+  --bg-line: #26362f;          /* hairline borders */
+
+  --gold: #f2b705;             /* floodlight gold — money, bids, primary accent */
+  --gold-dim: #b98f10;
+  --gold-glow: rgba(242, 183, 5, 0.35);
+
+  --pitch-green: #3fae67;      /* success / SOLD */
+  --pitch-green-glow: rgba(63, 174, 103, 0.35);
+
+  --alert-red: #e0483f;        /* timer urgency / UNSOLD / reject */
+  --alert-red-glow: rgba(224, 72, 63, 0.35);
+
+  --text-hi: #f4f1e8;
+  --text-mid: #b7c2ba;
+  --text-low: #6f7d75;
+
+  /* Type */
+  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Radius / shadow */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 50% -10%, #17251d 0%, var(--bg-void) 55%);
+  color: var(--text-hi);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+::selection { background: var(--gold-glow); }
+
+/* Focus visibility — accessibility floor */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---- Layout shell ---- */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--bg-line);
+  background: rgba(11, 18, 14, 0.85);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: var(--text-hi);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand .dot { color: var(--gold); }
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.nav-links a, .nav-links button.linklike {
+  color: var(--text-mid);
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.nav-links a:hover, .nav-links button.linklike:hover {
+  color: var(--gold);
+}
+
+.nav-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--bg-line);
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.page-body {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* ---- Buttons ---- */
+
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 11px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-gold {
+  background: linear-gradient(180deg, #ffcb2e, var(--gold));
+  color: #201700;
+  box-shadow: 0 4px 18px var(--gold-glow);
+}
+.btn-gold:hover:not(:disabled) { box-shadow: 0 6px 24px var(--gold-glow); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--bg-line);
+  color: var(--text-hi);
+}
+.btn-outline:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--alert-red);
+  color: var(--alert-red);
+}
+.btn-danger:hover:not(:disabled) { background: rgba(224,72,63,0.12); }
+
+.btn-green {
+  background: linear-gradient(180deg, #57d382, var(--pitch-green));
+  color: #06210f;
+  box-shadow: 0 4px 18px var(--pitch-green-glow);
+}
+
+.btn-block { width: 100%; }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+
+/* ---- Forms ---- */
+
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-low);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.field input, .field select, .field textarea {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-line);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  color: var(--text-hi);
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--gold);
+}
+
+/* ---- Cards / panels ---- */
+
+.panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 0%, #17251d 0%, var(--bg-void) 60%);
+}
+
+.auth-card {
+  width: 380px;
+}
+
+.auth-card h1 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  letter-spacing: 1px;
+  margin: 0 0 4px;
+}
+
+.auth-card .sub {
+  color: var(--text-mid);
+  font-size: 13px;
+  margin-bottom: 22px;
+}
+
+.error-banner {
+  background: rgba(224, 72, 63, 0.12);
+  border: 1px solid var(--alert-red);
+  color: #ffb4af;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.hint {
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: var(--text-low);
+  line-height: 1.6;
+}
+.hint b { color: var(--text-mid); }
+
+/* ---- Badges ---- */
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+.role-badge.BATSMAN { background: rgba(242,183,5,0.15); color: var(--gold); }
+.role-badge.BOWLER { background: rgba(63,174,103,0.15); color: var(--pitch-green); }
+.role-badge.ALL_ROUNDER { background: rgba(122, 154, 230, 0.15); color: #7a9ae6; }
+.role-badge.WICKETKEEPER { background: rgba(224,72,63,0.15); color: var(--alert-red); }
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.status-pill.SOLD { background: var(--pitch-green-glow); color: var(--pitch-green); }
+.status-pill.UNSOLD { background: var(--alert-red-glow); color: var(--alert-red); }
+.status-pill.UPCOMING { background: var(--bg-surface-raised); color: var(--text-mid); }
+.status-pill.ON_BLOCK { background: var(--gold-glow); color: var(--gold); }
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-line); border-radius: 4px; }
