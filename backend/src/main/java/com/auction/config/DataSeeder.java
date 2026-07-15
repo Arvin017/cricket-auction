@@ -93,7 +93,26 @@ public class DataSeeder implements CommandLineRunner {
                 p("Aditya Bhosale", PlayerRole.WICKETKEEPER, "India", 10000000L, "199 runs, 12 dismissals"),
                 p("Faisal Ahmed", PlayerRole.BOWLER, "Pakistan-eligible*", 14000000L, "30 wickets, econ 7.2"),
                 p("Liam O'Sullivan", PlayerRole.ALL_ROUNDER, "Ireland", 10000000L, "150 runs, 15 wkts"),
-                p("Suresh Pillai", PlayerRole.BATSMAN, "India", 10000000L, "260 runs, avg 26.0")
+                p("Suresh Pillai", PlayerRole.BATSMAN, "India", 10000000L, "260 runs, avg 26.0"),
+                p("Dhruv Malhotra", PlayerRole.BATSMAN, "India", 16000000L, "340 runs, avg 31.5"),
+                p("Connor Blake", PlayerRole.BOWLER, "England", 13500000L, "26 wickets, econ 7.6"),
+                p("Yuvan Rao", PlayerRole.ALL_ROUNDER, "India", 22000000L, "245 runs, 21 wkts"),
+                p("Zaid Qureshi", PlayerRole.WICKETKEEPER, "India", 12000000L, "230 runs, 16 dismissals"),
+                p("Ryan Fletcher", PlayerRole.BOWLER, "Australia", 19000000L, "37 wickets, econ 7.0"),
+                p("Karthik Iyer", PlayerRole.BATSMAN, "India", 14000000L, "310 runs, avg 28.2"),
+                p("Josh Bannerman", PlayerRole.ALL_ROUNDER, "New Zealand", 21000000L, "200 runs, 18 wkts"),
+                p("Aman Chauhan", PlayerRole.BOWLER, "India", 10000000L, "22 wickets, econ 7.9"),
+                p("Ollie Marsh", PlayerRole.BATSMAN, "England", 20000000L, "398 runs, SR 145"),
+                p("Nikhil Bhatt", PlayerRole.WICKETKEEPER, "India", 13000000L, "255 runs, 15 dismissals"),
+                p("Dwayne Clarke", PlayerRole.ALL_ROUNDER, "West Indies", 24000000L, "280 runs, 19 wkts"),
+                p("Harsh Vardhan", PlayerRole.BOWLER, "India", 11000000L, "25 wickets, econ 7.3"),
+                p("Ethan Cross", PlayerRole.BATSMAN, "South Africa", 17000000L, "330 runs, avg 30.0"),
+                p("Mihir Solanki", PlayerRole.ALL_ROUNDER, "India", 15000000L, "190 runs, 16 wkts"),
+                p("Callum Reid", PlayerRole.BOWLER, "Australia", 14500000L, "28 wickets, econ 7.5"),
+                p("Adarsh Menon", PlayerRole.WICKETKEEPER, "India", 10000000L, "180 runs, 11 dismissals"),
+                p("George Pemberton", PlayerRole.BATSMAN, "England", 23000000L, "410 runs, SR 141"),
+                p("Rohit Bhagat", PlayerRole.BOWLER, "India", 12500000L, "24 wickets, econ 7.7"),
+                p("Danesh Pillay", PlayerRole.ALL_ROUNDER, "South Africa", 19500000L, "215 runs, 17 wkts")
         ));
         log.info("Seeded {} players.", playerRepository.count());
     }
