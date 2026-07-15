@@ -9,13 +9,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * Seeds the database with a realistic demo set of teams, players, and login
  * accounts so the app can be demoed immediately without manual data entry.
- * Only runs if the teams table is empty (safe to restart the app).
+ *
+ * Each piece (teams, players, users) is seeded independently and checked
+ * separately, rather than gating everything on "do teams exist yet" — that
+ * used to mean a partial failure (e.g. teams inserted but players failing)
+ * would permanently skip re-seeding the missing piece on every future
+ * restart. The whole thing also runs in one transaction, so a failure
+ * partway through rolls back cleanly instead of leaving a half-seeded
+ * database behind.
  */
 @Slf4j
 @Component
@@ -28,13 +36,18 @@ public class DataSeeder implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void run(String... args) {
-        if (teamRepository.count() > 0) {
-            log.info("Data already seeded, skipping.");
-            return;
-        }
+        List<Team> teams = seedTeams();
+        seedPlayers();
+        seedUsers(teams);
+    }
 
-        log.info("Seeding demo data...");
+    private List<Team> seedTeams() {
+        if (teamRepository.count() > 0) {
+            log.info("Teams already seeded ({}), skipping.", teamRepository.count());
+            return teamRepository.findAll();
+        }
 
         List<Team> teams = teamRepository.saveAll(List.of(
                 Team.builder().name("Mumbai Monarchs").logoUrl("https://api.dicebear.com/7.x/shapes/svg?seed=Mumbai")
@@ -50,8 +63,15 @@ public class DataSeeder implements CommandLineRunner {
                 Team.builder().name("Hyderabad Hurricanes").logoUrl("https://api.dicebear.com/7.x/shapes/svg?seed=Hyderabad")
                         .purseTotal(1000000000L).purseRemaining(1000000000L).squadSizeMax(25).squadSizeMin(18).build()
         ));
+        log.info("Seeded {} teams.", teams.size());
+        return teams;
+    }
 
-        // Purse total: ₹100 Cr = 1,000,000,000 rupees, matching the project spec.
+    private void seedPlayers() {
+        if (playerRepository.count() > 0) {
+            log.info("Players already seeded ({}), skipping.", playerRepository.count());
+            return;
+        }
 
         playerRepository.saveAll(List.of(
                 p("Rohan Verma", PlayerRole.BATSMAN, "India", 20000000L, "412 runs, avg 34.2, SR 148"),
@@ -75,8 +95,15 @@ public class DataSeeder implements CommandLineRunner {
                 p("Liam O'Sullivan", PlayerRole.ALL_ROUNDER, "Ireland", 10000000L, "150 runs, 15 wkts"),
                 p("Suresh Pillai", PlayerRole.BATSMAN, "India", 10000000L, "260 runs, avg 26.0")
         ));
+        log.info("Seeded {} players.", playerRepository.count());
+    }
 
-        // Auctioneer account
+    private void seedUsers(List<Team> teams) {
+        if (userRepository.count() > 0) {
+            log.info("Users already seeded ({}), skipping.", userRepository.count());
+            return;
+        }
+
         userRepository.save(User.builder()
                 .username("admin")
                 .email("admin@auction.demo")
@@ -84,7 +111,6 @@ public class DataSeeder implements CommandLineRunner {
                 .role(UserRole.AUCTIONEER)
                 .build());
 
-        // One demo team-rep login per team (password: team123)
         for (Team team : teams) {
             String uname = team.getName().toLowerCase().replaceAll("[^a-z]", "");
             userRepository.save(User.builder()
@@ -96,8 +122,8 @@ public class DataSeeder implements CommandLineRunner {
                     .build());
         }
 
-        log.info("Seed complete: {} teams, {} players, {} users. Login as admin/admin123 (auctioneer) or e.g. mumbaimonarchs/team123 (team rep).",
-                teams.size(), playerRepository.count(), userRepository.count());
+        log.info("Seeded {} users. Login as admin/admin123 (auctioneer) or e.g. mumbaimonarchs/team123 (team rep).",
+                userRepository.count());
     }
 
     private Player p(String name, PlayerRole role, String nat, Long basePrice, String stats) {
